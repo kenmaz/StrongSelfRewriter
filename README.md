@@ -16,7 +16,7 @@ Input code
 ```
 
 Run StrongSelfRewriter
-```
+```shell
 StrongSelfRewriter rewrite Sample.swift
 ```
 
@@ -37,16 +37,16 @@ Output result (diff)
 ```
 
 ## Build
-```
+```shell
 git clone <repo>
 cd <repo>
 swift build
 ```
 Debug run
-```
+```shell
 .build/debug/StrongSelfRewriter rewrite Tests/StrongSelfRewriterTests/Sample.swift 
 ```
 Generate Xcode project
-```
+```shell
 swift package generate-xcodeproj
 ```
