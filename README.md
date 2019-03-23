@@ -38,3 +38,7 @@ Generate Xcode project
 ```shell
 swift package generate-xcodeproj
 ```
+
+## Thanks
+- [SwiftSyntax](https://github.com/apple/swift-syntax)
+- [try! Swift Tokyo 2019](https://www.tryswift.co/events/2019/tokyo/en/)
