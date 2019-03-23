@@ -3,7 +3,7 @@ StrongSelfRewriter is the tool to replace variable name for `guard let self = se
 
 ## Usage
 Input code
-```
+```swift
     func execute(completion: () -> Void) {
         DispatchQueue.main.async { [weak self] in
             guard let strongSelf = self else {
@@ -21,7 +21,7 @@ StrongSelfRewriter rewrite Sample.swift
 ```
 
 Output result (diff)
-```
+```diff
      func execute(completion: () -> Void) {
          DispatchQueue.main.async { [weak self] in
 -            guard let strongSelf = self else {
