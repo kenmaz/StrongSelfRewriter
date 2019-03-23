@@ -22,7 +22,7 @@ case 2:
     case .dump:
         rewriter.dump()
     case .rewrite:
-        rewriter.rewrite(dryrun: true)
+        rewriter.rewrite(dryrun: false)
     }
 default:
     fatalError()
