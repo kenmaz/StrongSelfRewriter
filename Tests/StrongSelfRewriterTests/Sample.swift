@@ -15,6 +15,7 @@ class Sample {
                 return
             }
             strongSelf.output(text: "hello")
+            print(strongSelf)
         }
     }
     
