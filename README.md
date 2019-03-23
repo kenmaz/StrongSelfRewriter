@@ -1,4 +1,5 @@
 # StrongSelfRewriter
+StrongSelfRewriter is the tool to replace variable name for `guard let self = self` optional binding code using SwiftSyntax
 
 ## Usage
 Input code
