@@ -34,3 +34,18 @@ Output result (diff)
          }
      }
 ```
+
+## Build
+```
+git clone <repo>
+cd <repo>
+swift build
+```
+Debug run
+```
+.build/debug/StrongSelfRewriter rewrite Tests/StrongSelfRewriterTests/Sample.swift 
+```
+Generate Xcode project
+```
+swift package generate-xcodeproj
+```
