@@ -32,7 +32,7 @@ USAGE: StrongSelfRewriter <path>
 OPTIONS:
   --dryrun, -d   Display rewrited code simply
   --dump         Dump syntax tree
-  --rewrite      Variable name for using replacement. Default is self
+  --rewrite      Variable name for replacement. Default is self
   --help         Display available options
 
 POSITIONAL ARGUMENTS:
