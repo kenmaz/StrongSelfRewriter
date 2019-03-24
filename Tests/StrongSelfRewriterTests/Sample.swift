@@ -29,15 +29,16 @@ class Sample {
         }
     }
     
-    func execute3(completion: () -> Void) {
-        DispatchQueue.main.async { [weak self] in
-            guard let `self` = self else {
-                return
-            }
-            self.output(text: "hello")
-            print(self)
-        }
-    }
+    //TODO: support this pattern
+//    func execute3(completion: () -> Void) {
+//        DispatchQueue.main.async { [weak self] in
+//            guard let `self` = self else {
+//                return
+//            }
+//            self.output(text: "hello")
+//            print(self)
+//        }
+//    }
 
     private func output(text: String) {
         print(text)

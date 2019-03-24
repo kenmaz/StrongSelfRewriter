@@ -26,20 +26,18 @@ public class StrongSelfRewriter: SyntaxRewriter {
     }
 
     let url: URL
-    let targetName: String
     let rewriteName: String
     
-    public init(url: URL, targetName: String = "strongSelf", rewriteName: String = "self") {
+    public init(url: URL, rewriteName: String = "self") {
         self.url = url
-        self.targetName = targetName
         self.rewriteName = rewriteName
         super.init()
     }
 
     public override func visit(_ node: ClosureExprSyntax) -> ExprSyntax {
-        let rewriter = SelfRenameRewriter(targetName: targetName, rewriteName: rewriteName)
+        let rewriter = SelfRenameRewriter(rewriteName: rewriteName)
         let retNode = rewriter.visit(node)
-        if rewriter.isRewrite {
+        if let targetName = rewriter.targetName {
             let res = SelfRefRewriter(targetName: targetName, rewriteName: rewriteName).visit(retNode)
             return res as! ExprSyntax
         } else {
@@ -48,18 +46,14 @@ public class StrongSelfRewriter: SyntaxRewriter {
     }
 }
 
-class BaseRewriter: SyntaxRewriter {
-    let targetName: String
+class SelfRenameRewriter: SyntaxRewriter {
+    var targetName: String? = nil
+
     let rewriteName: String
-    init(targetName: String, rewriteName: String) {
-        self.targetName = targetName
+    init(rewriteName: String) {
         self.rewriteName = rewriteName
     }
-}
 
-class SelfRenameRewriter: BaseRewriter {
-    var isRewrite: Bool = false
-    
     // guard let xxx = yyy else { .. }
     override public func visit(_ node: GuardStmtSyntax) -> StmtSyntax {
         let conds = node.conditions
@@ -68,10 +62,11 @@ class SelfRenameRewriter: BaseRewriter {
                 let syntax = cond.condition as? OptionalBindingConditionSyntax,     // let xxx = yyy
                 let rightVal = syntax.initializer.value as? IdentifierExprSyntax,   // yyy
                 rightVal.identifier.text == "self",                                 // yyy == "self"
-                let leftVal = syntax.pattern as? IdentifierPatternSyntax,           // xxx
-                leftVal.identifier.text == targetName else {                        // xxx == "<targetName>"
+                let leftVal = syntax.pattern as? IdentifierPatternSyntax else {     // xxx
                     return node
             }
+            targetName = leftVal.identifier.text
+            
             let identifier = leftVal.identifier
             let newKind = TokenKind.identifier(rewriteName)
             let newIdentifier = identifier.withKind(newKind)
@@ -80,14 +75,20 @@ class SelfRenameRewriter: BaseRewriter {
             let newCond = cond.withCondition(newSyntax)
             let newConds = conds.replacing(childAt: i, with: newCond)
             let newNode = node.withConditions(newConds)
-            isRewrite = true
             return newNode
         }
         return node
     }
 }
 
-class SelfRefRewriter: BaseRewriter {
+class SelfRefRewriter: SyntaxRewriter {
+    let targetName: String
+    let rewriteName: String
+    init(targetName: String, rewriteName: String) {
+        self.targetName = targetName
+        self.rewriteName = rewriteName
+    }
+
     override func visit(_ node: IdentifierExprSyntax) -> ExprSyntax {
         let identifier = node.identifier
         if identifier.text == targetName {
