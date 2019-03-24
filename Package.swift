@@ -11,7 +11,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-syntax.git", from: "0.40200.0"),
-        //.package(url: "https://github.com/apple/swift-package-manager.git", .branch("swift-4.2-branch"))
+        .package(url: "https://github.com/apple/swift-package-manager.git", .branch("swift-4.2-branch"))
     ],
     targets: [
         .target(
@@ -23,7 +23,7 @@ let package = Package(
             name: "StrongSelfRewriterCore",
             dependencies: [
                 "SwiftSyntax",
-                //"Utility"
+                "Utility"
             ]),
         .testTarget(
             name: "StrongSelfRewriterTests",

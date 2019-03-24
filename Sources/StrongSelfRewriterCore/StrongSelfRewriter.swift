@@ -8,18 +8,12 @@ import SwiftSyntax
 
 public class StrongSelfRewriter: SyntaxRewriter {
     
-    public func dump() {
+    public func rewrite(dryrun: Bool = false, dump: Bool = false) {
         do {
             let src = try SyntaxTreeParser.parse(url)
-            Swift.dump(src)
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    
-    public func rewrite(dryrun: Bool = false) {
-        do {
-            let src = try SyntaxTreeParser.parse(url)
+            if dump {
+                Swift.dump(src)
+            }
             let res = visit(src)
             if dryrun {
                 print(res.description)
@@ -35,14 +29,10 @@ public class StrongSelfRewriter: SyntaxRewriter {
     let targetName: String
     let rewriteName: String
     
-    public init(path: String, targetName: String = "strongSelf", rewriteName: String = "self") {
+    public init(url: URL, targetName: String = "strongSelf", rewriteName: String = "self") {
+        self.url = url
         self.targetName = targetName
         self.rewriteName = rewriteName
-        let fm = FileManager.default
-        guard fm.fileExists(atPath: path) else {
-            fatalError("file not found: \(path)")
-        }
-        url = URL(fileURLWithPath: path)
         super.init()
     }
 
@@ -91,7 +81,7 @@ class SelfRenameRewriter: BaseRewriter {
             let newConds = conds.replacing(childAt: i, with: newCond)
             let newNode = node.withConditions(newConds)
             isRewrite = true
-            return SelfRefRewriter(targetName: targetName, rewriteName: rewriteName).visit(newNode)
+            return newNode
         }
         return node
     }
