@@ -3,7 +3,7 @@ StrongSelfRewriter is the tool to replace variable name for `guard let self = se
 
 ## Usage
 ```shell
-StrongSelfRewriter rewrite Sample.swift
+StrongSelfRewriter Sample.swift
 ```
 
 Result
@@ -22,7 +22,22 @@ Result
      }
 ```
 
+Options
+```shell
+$ StrongSelfRewriter 
+OVERVIEW: Replace optional self binding variable name to "self" or specified name by --rewrite option
 
+USAGE: StrongSelfRewriter <path>
+
+OPTIONS:
+  --dryrun, -d   Display rewrited code simply
+  --dump         Dump syntax tree
+  --rewrite      Variable name for using replacement. Default is self
+  --help         Display available options
+
+POSITIONAL ARGUMENTS:
+  path           Path to .swift file
+```
 
 ## Build
 ```shell
@@ -37,6 +52,11 @@ Debug run
 Generate Xcode project
 ```shell
 swift package generate-xcodeproj
+```
+
+Release build
+```shell
+swift build -c release
 ```
 
 ## Thanks
